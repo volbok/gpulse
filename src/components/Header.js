@@ -111,7 +111,7 @@ function Header({ link, titulo }) {
             ></img>
           </Link>
           <Link
-            to="/pulsar-web"
+            to="/gpulse"
             className="blue-button"
             title="FAZER LOGOFF."
             style={{

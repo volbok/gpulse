@@ -1,6 +1,6 @@
 {
-  "homepage": "http://volbok.github.io/pulsar-web",
-  "name": "pulsar-web",
+  "homepage": "http://volbok.github.io/gpulse",
+  "name": "gpulse",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

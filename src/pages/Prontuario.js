@@ -3889,7 +3889,7 @@ function Prontuario() {
               ></img>
             </Link>
             <Link
-              to="/pulsar-web"
+              to="/gpulse"
               className="grey-button"
               title="FAZER LOGOFF."
               style={{
