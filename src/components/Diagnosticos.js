@@ -227,12 +227,12 @@ function Diagnostico(
   // renderização do componente.
   if (viewcomponent !== 0) {
     return (
-      <div className="menucover fade-in" style={{ zIndex: 9, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="menucover fade-in" style={{ zIndex: 9 }}>
         <DatePicker valordatepicker={valordatepicker} mododatepicker={mododatepicker} />
         <Toast valortoast={valortoast} cor={cor} mensagem={mensagem} tempo={tempo} />
         <div className="menucontainer">
           <div id="cabeçalho" className="cabecalho">
-            <div className="title5">{viewcomponent == 1 ? 'INSERIR DIAGNÓSTICO' : 'EDITAR DIAGNÓSTICO'}</div>
+            <div>{viewcomponent == 1 ? 'INSERIR DIAGNÓSTICO' : 'EDITAR DIAGNÓSTICO'}</div>
             <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
               <button className="red-button" onClick={() => setviewcomponent(0)}>
                 <img
@@ -260,25 +260,14 @@ function Diagnostico(
               </button>
             </div>
           </div>
-          <div
-            className="corpo"
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                width: '100%',
-              }}
-            >
-            </div>
-            <div id="FILTROS DE DIAGNÓSTICOS" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div className="corpo">
+            <div id="FILTROS DE DIAGNÓSTICOS" style={{ display: 'flex', flexDirection: window.innerWidth > 400 ? 'row' : 'column', justifyContent: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '20vw' }}>
                 <label className="title2">
                   DATA DO DIAGNÓSTICO:
                 </label>
                 <label
-                  style={{ width: 200 }}
+                  style={{ width: '90%' }}
                   autoComplete="off"
                   className="input"
                   placeholder="INÍCIO"
@@ -294,7 +283,7 @@ function Diagnostico(
                   {pickdate1}
                 </label>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '20vw' }}>
                 <label className="title2">
                   CID:
                 </label>
@@ -308,14 +297,14 @@ function Diagnostico(
                   onChange={() => filterCid()}
                   title="CID."
                   style={{
-                    width: 100
+                    width: '90%'
                   }}
                   type="text"
                   maxLength={5}
                   id="inputCid"
                 ></input>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '30vw' }}>
                 <label className="title2">
                   DIAGNÓSTICO:
                 </label>
@@ -335,9 +324,9 @@ function Diagnostico(
               </div>
             </div>
             <div
-              className="scroll"
+              className="scrolldrop"
               id="LISTA DE DIAGNÓSTICOS"
-              style={{ width: 0.6 * window.innerWidth, height: 0.3 * window.innerHeight, marginTop: 20 }}
+              style={{ width: '100%', height: '30vh', marginTop: 20 }}
             >
               {arraydiagnostico.map((item) => (
                 <p
@@ -345,7 +334,6 @@ function Diagnostico(
                   id="item da lista"
                   className="row"
                   onClick={() => selectDiagnostico(item)}
-                  style={{ margin: 5, marginTop: 2.5, marginBottom: 2.5 }}
                 >
                   <button
                     className={item.codigo == selectcid ? "red-button" : "blue-button"}
