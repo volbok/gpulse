@@ -13,7 +13,7 @@ import Context from '../Context'
 import { useHistory } from 'react-router-dom'
 
 // lixo a excluir (insistência de Guilherme).
-import { Stuff, MoreStuff } from '../components/Stuff'
+import { Stuff } from '../components/Stuff'
 
 function Unidades() {
   var html = 'https://pulsarapp-server.herokuapp.com';
@@ -66,33 +66,15 @@ function Unidades() {
   function ShowUnidades() {
     return (
       <div
-        className="scrollgroup"
+        className="scroll" style={{ alignItems: 'center' }}
+        id="LISTA DE UNIDADES"
         style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          margin: 0,
-          marginTop: 5,
-          padding: 5,
+          height: '82vh', maxHeight: '82vh',
+          flexDirection: window.innerWidth < 400 ? 'column' : 'row',
+          flexWrap: window.innerWidth < 400 ? 'nowrap' : 'wrap',
         }}
       >
-        <div
-          className="scroll"
-          id="LISTA DE UNIDADES"
-          style={{
-            display: 'flex',
-            flexDirection: window.innerWidth < 800 ? 'column' : 'row',
-            justifyContent: 'flex-start',
-            width: '100%',
-            height: '82vh',
-            flexWrap: window.innerWidth < 800 ? 'nowrap' : 'wrap',
-            alignItems: 'center',
-            borderRadius: 5,
-            margin: 0,
-          }}
-        >
-          {unidades.map((item) => GetData(item))}
-        </div>
+        {unidades.map((item) => GetData(item))}
       </div>
     )
   }
@@ -836,7 +818,7 @@ function Unidades() {
     ) {
       return (
         <div
-          className="card"
+          className="pulsewidgethospitais"
           onClick={() => selectUnidade(item)}
           style={{
             display: renderchart == 1 ? 'flex' : 'none',
@@ -846,7 +828,6 @@ function Unidades() {
             borderRadius: 5,
             padding: 10,
             width: window.innerWidth < 400 ? '95%' : '21vw',
-            height: 400
           }}
         >
           <p
@@ -1060,7 +1041,7 @@ function Unidades() {
     ) {
       return (
         <div
-          className="card"
+          className="pulsewidgethospitais"
           onClick={() => selectUnidade(item)}
           style={{
             display: renderchart == 1 ? 'flex' : 'none',
@@ -1070,7 +1051,6 @@ function Unidades() {
             borderRadius: 5,
             padding: 10,
             width: window.innerWidth < 800 ? '95%' : '21vw',
-            height: 400
           }}
         >
           <p
@@ -1262,7 +1242,7 @@ function Unidades() {
     ) {
       return (
         <div
-          className="card"
+          className="pulsewidgethospitais"
           onClick={() => selectUnidade(item)}
           style={{
             display: renderchart == 1 ? 'flex' : 'none',
@@ -1272,7 +1252,6 @@ function Unidades() {
             borderRadius: 5,
             padding: 10,
             width: window.innerWidth < 800 ? '95%' : '21vw',
-            height: 400
           }}
         >
           <p
@@ -1443,6 +1422,7 @@ function Unidades() {
       <button
         className={painelgestor == 1 ? "red-button" : "green-button"}
         style={{
+          display: window.innerWidth > 400 ? 'flex' : 'none',
           width: '8vw', minHeight: '8vw',
           alignSelf: 'flex-start',
           position: 'absolute',
@@ -1455,57 +1435,39 @@ function Unidades() {
     )
   }
 
+  function PainelDoGestor() {
+    return (
+      <div className="scroll fade-in"
+        style={{
+          position: 'absolute', top: 20, bottom: 20, right: 20,
+          backgroundColor: 'darkgray',
+          borderRadius: 5,
+          padding: 10,
+          display: painelgestor == 1 ? 'flex' : 'none',
+          width: '30vw',
+          opacity: 1,
+          zIndex: 2,
+          boxShadow: '0px 2px 10px 5px rgba(0, 0, 0, 0.5)'
+        }}>
+        <Stuff></Stuff>
+      </div>
+    )
+  }
+
   // renderização do componente.
   return (
     <div
       className="main fade-in"
       style={{
         display: renderchart == 1 ? 'flex' : 'none',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        verticalAlign: 'center',
-        overflowX: 'hidden',
-        overflowY: 'hidden',
-        margin: 0,
-        padding: 0,
-        height: window.innerHeight,
-        maxHeight: window.innerHeight,
       }}
     >
+      <PainelDoGestor></PainelDoGestor>
       <Header link={'/hospitais'} titulo={nomehospital}></Header>
       <Toast valor={valor} cor={cor} mensagem={mensagem} tempo={tempo} />
-      <div
-        className="scroll"
-        style={{
-          display: window.innerWidth > 400 ? 'flex' : 'none',
-          width: '100vw', padding: 5,
-          height: '100vh',
-          backgroundColor: 'transparent',
-          borderColor: 'transparent',
-          overflowY: 'scroll',
-        }}>
-        <PainelDoGestorBtn></PainelDoGestorBtn>
-        <div
-          className="fade-in"
-          style={{
-            display: painelgestor == 1 ? 'flex' : 'none', flexDirection: 'row', justifyContent: 'center',
-            width: '100%'
-          }}>
-          <Stuff></Stuff>
-          <MoreStuff></MoreStuff>
-        </div>
-        <ShowUnidades></ShowUnidades>
-        <ViewInterconsultas></ViewInterconsultas>
-      </div>
-      <div
-        style={{
-          display: window.innerWidth < 400 ? 'flex' : 'none',
-          flexDirection: 'row', justifyContent: 'center',
-          width: '100%'
-        }}>
-        <ShowUnidades></ShowUnidades>
-        <ViewInterconsultas></ViewInterconsultas>
-      </div>
+      <PainelDoGestorBtn></PainelDoGestorBtn>
+      <ShowUnidades></ShowUnidades>
+      <ViewInterconsultas></ViewInterconsultas>
     </div>
   )
 }

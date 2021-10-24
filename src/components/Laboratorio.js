@@ -822,7 +822,7 @@ function Laboratorio({ viewlaboratorio }) {
           maxLength={100}
         ></input>
         <div
-          className="scrolldrop"
+          className="scroll"
           id="LISTA DE EXAMES LABORATORIAIS PARA SELEÇÃO"
           style={{
             display: arrayfilterlab.length > 0 ? 'flex' : 'none',
@@ -847,7 +847,7 @@ function Laboratorio({ viewlaboratorio }) {
           ))}
         </div>
         <div
-          className="scrolldrop"
+          className="scroll"
           id="LISTA DE EXAMES LABORATORIAIS PARA SELEÇÃO"
           style={{
             display: arrayfilterlab.length > 0 ? 'none' : 'flex',
@@ -1024,7 +1024,7 @@ function Laboratorio({ viewlaboratorio }) {
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '50vh' }}>
                 <div className="title2center" style={{ marginTop: 15, marginBottom: 20 }}>SELEÇÃO RÁPIDA DE EXAMES:</div>
                 <div
-                  className="scrolldrop"
+                  className="scroll"
                   style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',

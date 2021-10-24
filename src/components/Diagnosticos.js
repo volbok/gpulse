@@ -324,7 +324,7 @@ function Diagnostico(
               </div>
             </div>
             <div
-              className="scrolldrop"
+              className="scroll"
               id="LISTA DE DIAGNÓSTICOS"
               style={{ width: '100%', height: '30vh', marginTop: 20 }}
             >

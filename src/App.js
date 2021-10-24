@@ -71,15 +71,43 @@ function IddleTimeOut() {
       setvalor(0)
     }, time)
   }
+
+  // desabilitando zoom ao pressionar duas vezes a tela (mobile devices).
+  const disablePinchZoom = (e) => {
+    if (e.touches.length > 1) {
+      e.preventDefault()
+    }
+  }
+
   useEffect(() => {
     loadTimeOut()
     window.onmousemove = function () {
       resetTimeOut()
     }
+    // desabilitando zoom nos dispositivos iOs.
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    });
+    document.addEventListener('gesturechange', function (e) {
+      e.preventDefault();
+    });
+    document.addEventListener('gestureend', function (e) {
+      e.preventDefault();
+    });
+    document.body.addEventListener('touchmove', function (event) {
+      event.preventDefault();
+    });
+    document.ontouchstart = (e) => {
+      e.preventDefault();
+    };
   }, [])
 
   return (
-    <div className="main" translate="no">
+    <div
+      className="main"
+      translate="no"
+      onTouchEnd={(e) => disablePinchZoom(e)}
+    >
       <Toast valor={valor} cor={cor} mensagem={mensagem} tempo={tempo} />
       <Toast></Toast>
       <DatePicker></DatePicker>
@@ -157,38 +185,64 @@ function App() {
   // listas da tela prontuário.
   const [listevolucoes, setlistevolucoes] = useState([]);
   const [arrayevolucao, setarrayevolucao] = useState([]);
-  
+
   const [listdiagnosticos, setlistdiagnosticos] = useState([]);
   const [arraydiagnosticos, setarraydiagnosticos] = useState([]);
-  
+
   const [listproblemas, setlistproblemas] = useState([]);
   const [arrayproblemas, setarrayproblemas] = useState([]);
-  
+
   const [listpropostas, setlistpropostas] = useState([]);
   const [arraypropostas, setarraypropostas] = useState([]);
-  
+
   const [listinterconsultas, setlistinterconsultas] = useState([]);
   const [arrayinterconsultas, setarrayinterconsultas] = useState([]);
-  
+
   const [listlaboratorio, setlistlaboratorio] = useState([]);
   const [arraylaboratorio, setarraylaboratorio] = useState([]);
-  
+
   const [listimagem, setlistimagem] = useState([]);
   const [arrayimagem, setarrayimagem] = useState([]);
-  
+
   const [listbalancos, setlistbalancos] = useState([]);
   const [listitensprescricao, setlistitensprescricoes] = useState([]);
-  
+
   const [listformularios, setlistformularios] = useState([]);
   const [arrayformularios, setarrayformularios] = useState([]);
 
-  // estado das scrolls (evita o reposicionamento das scrolls para o topo, quando um componente é re-renderizado).
+  // INATIVO NO MOMENTO - estado das scrolls (evita o reposicionamento das scrolls para o topo, quando um componente é re-renderizado).
   const [scrollmenu, setscrollmenu] = useState(0) // scroll do menu principal (tela prontuário).
   const [scrolllist, setscrolllist] = useState(0) // listas da tela principal (evolução, diagnósticos, etc.).
   const [scrollprescricao, setscrollprescricao] = useState(0) // scroll da prescrição médica.
   const [scrollitem, setscrollitem] = useState(0) // scroll da lista de componentes de cada item da prescrição.
   const [scrollitemcomponent, setscrollitemcomponent] = useState(0) // scroll da lista de componentes de cada item da prescrição.
 
+  // estados relacionados ao painel de controle (settings), responsável por gerenciar a visualização de componentes do menu e de cards na tela principal.
+  // menu.
+  const [viewsettings, setviewsettings] = useState(0);
+  const [settings, setsettings] = useState([0, 1]);
+  const [menuevolucoes, setmenuevolucoes] = useState(1);
+  const [menudiagnosticos, setmenudiagnosticos] = useState(1);
+  const [menuproblemas, setmenuproblemas] = useState(1);
+  const [menupropostas, setmenupropostas] = useState(1);
+  const [menuinterconsultas, setmenuinterconsultas] = useState(1);
+  const [menulaboratorio, setmenulaboratorio] = useState(1);
+  const [menuimagem, setmenuimagem] = useState(1);
+  const [menuprescricao, setmenuprescricao] = useState(1);
+  const [menuformularios, setmenuformularios] = useState(1);
+  // cards.
+  const [cardstatus, setcardstatus] = useState(0);
+  const [cardalertas, setcardalertas] = useState(0);
+  const [cardprecaucao, setcardprecaucao] = useState(0);
+  const [carddiasinternacao, setcarddiasinternacao] = useState(0);
+  const [cardultimaevolucao, setcardultimaevolucao] = useState(0);
+  const [cardinvasoes, setcardinvasoes] = useState(0);
+  const [carddiagnosticos, setcarddiagnosticos] = useState(0);
+  const [cardlesoes, setcardlesoes] = useState(0);
+  const [cardhistoricoatb, setcardhistoricoatb] = useState(0);
+  const [cardhistoricoatendimentos, setcardhistoricoatendimentos] = useState(0);
+  const [cardanamnese, setcardanamnese] = useState(0);
+  
   return (
     <Context.Provider
       value={{
@@ -239,12 +293,36 @@ function App() {
         listbalancos, setlistbalancos,
         listformularios, setlistformularios,
         arrayformularios, setarrayformularios,
-        // estados das scrolls.
+        // estados das scrolls (INATIVO).
         scrollmenu, setscrollmenu,
         scrolllist, setscrolllist,
         scrollprescricao, setscrollprescricao,
         scrollitem, setscrollitem,
-        scrollitemcomponent, setscrollitemcomponent
+        scrollitemcomponent, setscrollitemcomponent,
+        // settings (visualização de botões do menu principal e de cards da tela principal).
+        viewsettings, setviewsettings,
+        settings, setsettings,
+        // menu principal.
+        menuevolucoes, setmenuevolucoes,
+        menudiagnosticos, setmenudiagnosticos,
+        menuproblemas, setmenuproblemas,
+        menupropostas, setmenupropostas,
+        menuinterconsultas, setmenuinterconsultas,
+        menulaboratorio, setmenulaboratorio,
+        menuimagem, setmenuimagem,
+        menuprescricao, setmenuprescricao,
+        menuformularios, setmenuformularios,
+        // cards da tela principal.
+        cardstatus, setcardstatus,
+        cardalertas, setcardalertas,
+        cardprecaucao, setcardprecaucao,
+        carddiasinternacao, setcarddiasinternacao,
+        cardultimaevolucao, setcardultimaevolucao,
+        cardinvasoes, setcardinvasoes,
+        carddiagnosticos, setcarddiagnosticos,
+        cardlesoes, setcardlesoes,
+        cardhistoricoatb, setcardhistoricoatb,
+        cardhistoricoatendimentos, setcardhistoricoatendimentos
       }}
     >
       <Router>

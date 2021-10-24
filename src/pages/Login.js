@@ -191,7 +191,7 @@ function Login() {
 
   // renderização do componente.
   return (
-    <div className="main fade-in" style={{ backgroundColor: '#f6f1e4' }}>
+    <div className="main fade-in" style={{ backgroundColor: '#f2f2f2' }}>
       <Toast valor={valor} cor={cor} mensagem={mensagem} tempo={tempo}></Toast>
       <div
         style={{

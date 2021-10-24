@@ -114,11 +114,9 @@ function Pacientes() {
               width: '100%'
             }}
           >
-            <div>
-              NOME
-            </div>
+            NOME
           </button>
-          <button
+          <div
             className="rowitemheader"
             style={{
               display: window.innerWidth < 400 ? 'none' : 'flex',
@@ -126,8 +124,8 @@ function Pacientes() {
             }}
           >
             IDADE
-          </button>
-          <button
+          </div>
+          <div
             className="rowitemheader"
             style={{
               display: window.innerWidth < 400 ? 'none' : 'flex',
@@ -135,18 +133,16 @@ function Pacientes() {
             }}
           >
             TEMPO DE INTERNAÇÃO
-          </button>
-          <button
+          </div>
+          <div
             className="rowitemheader"
             style={{
               display: window.innerWidth < 400 ? 'none' : 'flex',
               width: '30%',
             }}
           >
-            <div>
-              MÉDICO ASSISTENTE
-            </div>
-          </button>
+            MÉDICO ASSISTENTE
+          </div>
         </div>
       </div>
     )
@@ -157,11 +153,9 @@ function Pacientes() {
     if (atendimentos.length > 0) {
       return (
         <div
-          className="scroll"
-          style={{
-            height: '40vh',
-          }}
           id="LISTA DE PACIENTES"
+          className="scroll"
+          style={{ height: '100%' }}
         >
           {atendimentos.sort(((a, b) => a.box > b.box ? 1 : -1)).map((item) => (
             <div
@@ -1137,16 +1131,6 @@ function Pacientes() {
     return (
       <div
         className="main fade-in"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          overflowY: 'hidden',
-          overflowX: 'hidden',
-          width: window.innerWidth,
-          margin: 0,
-          padding: 0,
-        }}
       >
         <Header link={"/unidades"} titulo={nomehospital + ' - ' + nomeunidade}></Header>
         <div
@@ -1156,12 +1140,11 @@ function Pacientes() {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             width: '100%',
-            height: window.innerWidth < 800 ? 0.785 * window.innerHeight : '100%',
+            height: '100%',
             marginTop: 5
           }}>
           <Chart></Chart>
           <div
-            className="scrollgroup"
             style={{
               display: tipounidade == 2 ? 'flex' : 'none',
               flexDirection: 'column',
@@ -1169,6 +1152,7 @@ function Pacientes() {
               alignItems: 'center',
               width: '100%',
               height: '100%',
+              padding: 5,
             }}>
             <FilterPacientes></FilterPacientes>
             <CabecalhoInternacao></CabecalhoInternacao>

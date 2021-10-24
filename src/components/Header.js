@@ -31,44 +31,51 @@ function Header({ link, titulo }) {
         boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.3)',
       }}
     >
-      <img
-        alt=""
-        id="logo"
-        src={logo}
-        style={{
-          display: link !== "/prontuario" && window.innerWidth > 400 ? 'flex' : 'none',
-          margin: 5, marginLeft: 10,
-          padding: 10,
-          height: 0.15 * window.innerHeight,
-          borderRadius: 50,
-        }}
-      ></img>
-      <img
-        alt=""
-        id="logo"
-        src={foto}
-        style={{
-          display: link === "/prontuario" ? 'flex' : 'none',
-          margin: 0,
-          marginLeft: 5,
-          marginRight: 5,
-          padding: 0,
-          borderRadius: 5,
-          height: 0.15 * window.innerHeight,
-        }}
-      ></img>
-      <div
-        className="title1"
-        style={{
-          alignSelf: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          color: '#ffffff',
-          width: '100%',
-          padding: 5,
-        }}
-      >
-        {titulo}
+      <div style={{
+        display: 'flex', textAlign: 'left',
+        flexDirection: 'row', justifyContent: 'flex-start', 
+        alignItems: 'flex-start', alignSelf: 'flex-start', 
+        width: '100%'
+      }}>
+        <img
+          alt=""
+          id="logo"
+          src={logo}
+          style={{
+            display: link !== "/prontuario" && window.innerWidth > 400 ? 'flex' : 'none',
+            margin: 5, marginLeft: 10,
+            padding: 10,
+            height: 0.15 * window.innerHeight,
+            borderRadius: 50,
+          }}
+        ></img>
+        <img
+          alt=""
+          id="logo"
+          src={foto}
+          style={{
+            display: link === "/prontuario" ? 'flex' : 'none',
+            margin: 0,
+            marginLeft: 5,
+            marginRight: 5,
+            padding: 0,
+            borderRadius: 5,
+            height: 0.15 * window.innerHeight,
+          }}
+        ></img>
+        <div
+          className="title1"
+          style={{
+            marginLeft: window.innerWidth > 400 ? 0 : 10,
+            alignSelf: 'center',
+            justifyContent: 'flex-start',
+            textAlign: 'left',
+            color: '#ffffff',
+            padding: 5,
+          }}
+        >
+          {titulo}
+        </div>
       </div>
       <div
         style={{
@@ -80,13 +87,10 @@ function Header({ link, titulo }) {
       >
         <div
           className="title2"
-          // style={{position: 'absolute', top: 10, right: 10, fontSize: 14}}
           style={{
+            position: 'sticky',
             justifyContent: 'flex-end', marginRight: 0,
-            height: window.innerWidth > 400 ? 30 : 20,
-            maxHeight: window.innerWidth > 400 ? 20 : 30,
             verticalAlign: 'center',
-            width: window.innerWidth > 400 ? 200 : 100,
             color: '#ffffff', textAlign: 'right',
           }}
         >

@@ -27,31 +27,15 @@ function Hospitais() {
   function ShowHospitais() {
     return (
       <div
-        className="scrollgroup"
+        className="scroll" style={{ alignItems: 'center' }}
+        id="LISTA DE HOSPITAIS"
         style={{
-          display: 'flex',
-          width: window.innerWidth,
-          margin: 0,
-          padding: 5,
+          height: '82vh', maxHeight: '82vh',
+          flexDirection: window.innerWidth < 400 ? 'column' : 'row',
+          flexWrap: window.innerWidth < 400 ? 'nowrap' : 'wrap',
         }}
       >
-        <div
-          className="scroll"
-          id="LISTA DE HOSPITAIS"
-          style={{
-            display: 'flex',
-            flexDirection: window.innerWidth < 800 ? 'column' : 'row',
-            justifyContent: 'flex-start',
-            width: '100vw',
-            height: '82vh',
-            flexWrap: window.innerWidth < 800 ? 'nowrap' : 'wrap',
-            alignItems: 'flex-start',
-            borderRadius: 5,
-            margin: 0,
-          }}
-        >
-          {hospitais.map((item) => GetData(item))}
-        </div>
+        {hospitais.map((item) => GetData(item))}
       </div>
     )
   }
@@ -145,39 +129,42 @@ function Hospitais() {
     return (
       <div
         id="hospital"
-        className="card"
+        className="pulsewidgethospitais"
         onClick={() => selectHospital(item)}
         style={{
           position: 'relative',
           display: renderchart == 1 ? 'flex' : 'none',
           flexDirection: 'column',
-          justifyContent: 'center',
           alignItems: 'center',
-          alignSelf: window.innerWidth < 400 ? 'center' : 'flex-start',
+          alignSelf: 'flex-start',
           borderRadius: 5,
-          padding: 10,
+          padding: 20,
           width: window.innerWidth < 400 ? '95%' : '21vw',
         }}
       >
-        <p
-          className="title2"
+        <div
+          className="title2center"
           style={{
-            fontSize: 22,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            fontSize: 18,
             fontWeight: 'bold',
             margin: 5,
+            marginBottom: 10,
             padding: 0,
-            height: 100,
             minWidth: 200,
             width: 200,
-            textAlign: 'center',
+            height: 100,
+            minHeight: 100,
           }}
         >
-          {item.hospital}
-        </p>
+          {JSON.stringify(item.hospital).length > 40 ? JSON.stringify(item.hospital).substring(1, 38) + '...' : item.hospital}
+        </div>
         <Doughnut
           data={dataChart}
-          width={200}
-          height={200}
+          width={window.innerWidth > 400 ? 0.15 * window.innerWidth : 200}
+          height={window.innerWidth > 400 ? 0.15 * window.innerWidth : 200}
           maintainAspectRatio={true}
           responsive={true}
           plugins={ChartDataLabels}
@@ -222,16 +209,14 @@ function Hospitais() {
             responsive: false,
           }}
         ></Doughnut>
-        <div style={{ flexDirection: 'column', justifyContent: 'center' }}>
+        <div>
           <div>
-            <p
+            <div
               className="title2"
               style={{
                 fontWeight: 'bold',
                 margin: 2.5,
-                marginTop: 10,
                 padding: 0,
-                fontSize: 14,
               }}
             >
               {'OCUPAÇÃO: ' +
@@ -245,11 +230,11 @@ function Hospitais() {
                     .reduce(somaLeitos, 0),
                 ) +
                 '%'}
-            </p>
+            </div>
           </div>
           <div
-            className="secondary"
             style={{
+              display: 'flex',
               flexDirection: 'row',
               marginTop: 5,
               marginBottom: 20,
@@ -304,13 +289,6 @@ function Hospitais() {
             </p>
           </div>
         </div>
-        <button
-          className="blue-button"
-          style={{ display: tipousuario == 3 ? 'flex' : 'none', padding: 10 }}
-          onClick={(e) => { history.push('/atendimentos'); e.stopPropagation() }}
-        >
-          MOVIMENTAR PACIENTE
-        </button>
       </div>
     )
   }
@@ -321,15 +299,6 @@ function Hospitais() {
       className="main fade-in"
       style={{
         display: renderchart == 1 ? 'flex' : 'none',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        verticalAlign: 'center',
-        overflowX: 'hidden',
-        overflowY: 'hidden',
-        margin: 0,
-        padding: 0,
-        height: window.innerHeight,
-        maxHeight: window.innerHeight,
       }}
     >
       <Header link={'/gpulse'} titulo={'HOSPITAIS'}></Header>

@@ -161,7 +161,7 @@ function Imagem(
           maxLength={100}
         ></input>
         <div
-          className="scrolldrop"
+          className="scroll"
           id="LISTA DE EXAMES DE IMAGEM DISPONÍVEIS"
           style={{
             display: arrayfilterimagem.length > 0 ? 'flex' : 'none',
@@ -189,7 +189,7 @@ function Imagem(
           ))}
         </div>
         <div
-          className="scrolldrop"
+          className="scroll"
           id="LISTA DE EXAMES DE IMAGEM SELECIONADOS"
           style={{
             display: arrayfilterimagem.length > 0 ? 'none' : 'flex',

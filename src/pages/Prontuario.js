@@ -30,6 +30,7 @@ import salvar from '../images/salvar.svg';
 import copiar from '../images/copiar.svg';
 import invasoes from '../images/invasoes.svg';
 import curativo from '../images/curativo.svg';
+import settingsimg from '../images/settings.svg'
 import viewimage from '../images/viewimage.svg';
 import imprimir from '../images/imprimir.svg';
 import novo from '../images/novo.svg';
@@ -39,8 +40,10 @@ import logoff from '../images/power.svg';
 import back from '../images/back.svg';
 import foto from '../images/3x4.jpg';
 import clock from '../images/clock.svg';
+import info from '../images/info.svg';
 // importando componentes de sobreposição.
 import UpdateAtendimento from '../components/UpdateAtendimento';
+import Settings from '../components/Settings';
 import Evolucao from '../components/Evolucao';
 import Diagnostico from '../components/Diagnosticos';
 import Problemas from '../components/Problemas';
@@ -102,6 +105,31 @@ function Prontuario() {
     listbalancos, setlistbalancos,
     listformularios, setlistformularios,
     arrayformularios, setarrayformularios,
+    // settings:
+    viewsettings, setviewsettings,
+    settings, setsettings,
+    // menu principal.
+    menuevolucoes, setmenuevolucoes,
+    menudiagnosticos, setmenudiagnosticos,
+    menuproblemas, setmenuproblemas,
+    menupropostas, setmenupropostas,
+    menuinterconsultas, setmenuinterconsultas,
+    menulaboratorio, setmenulaboratorio,
+    menuimagem, setmenuimagem,
+    menuprescricao, setmenuprescricao,
+    menuformularios, setmenuformularios,
+    // cards.
+    cardinvasoes, setcardinvasoes,
+    cardlesoes, setcardlesoes,
+    cardstatus, setcardstatus,
+    cardalertas, setcardalertas,
+    cardprecaucao, setcardprecaucao,
+    carddiasinternacao, setcarddiasinternacao,
+    cardultimaevolucao, setcardultimaevolucao,
+    carddiagnosticos, setcarddiagnosticos,
+    cardhistoricoatb, setcardhistoricoatb,
+    cardhistoricoatendimentos, setcardhistoricoatendimentos,
+
   } = useContext(Context)
   // history (react-router-dom).
   let history = useHistory()
@@ -253,12 +281,27 @@ function Prontuario() {
 
   // carregando os dados do paciente.
   const [listpacientes, setlistpacientes] = useState([]);
+  const [nomemae, setnomemae] = useState('');
+  const [contato, setcontato] = useState('');
+  const [endereço, setendereço] = useState('');
   const loadPaciente = (idpcte) => {
     axios.get(html + "/pacientes").then((response) => {
       setlistpacientes(response.data);
       var x = [0, 1];
       x = response.data;
       setnomepaciente(x.filter((item) => item.id == idpcte).map((item) => item.nome));
+      setnomemae(x.filter((item) => item.id == idpcte).map((item) => item.mae));
+      setcontato(
+        x.filter((item) => item.id == idpcte).map((item) => item.telefone) + ' - ' +
+        x.filter((item) => item.id == idpcte).map((item) => item.email)
+      );
+      setendereço(
+        x.filter((item) => item.id == idpcte).map((item) => item.rua) + ', Nº ' +
+        x.filter((item) => item.id == idpcte).map((item) => item.numero) + ', BAIRRO ' +
+        x.filter((item) => item.id == idpcte).map((item) => item.bairro) + ', ' +
+        x.filter((item) => item.id == idpcte).map((item) => item.cidade) + ' - ' +
+        x.filter((item) => item.id == idpcte).map((item) => item.estado) + '.'
+      );
       setdn(x.filter((item) => item.id == idpcte).map((item) => item.dn));
       setTimeout(() => {
         setidade(moment().diff(moment(x.filter((item) => item.id == idpaciente).map((item) => item.dn), 'DD/MM/YYYY'), 'years'));
@@ -1142,7 +1185,11 @@ function Prontuario() {
   // exibição da lista de diagnósticos (tela principal).
   function CardDiagnosticos() {
     return (
-      <div className="pulsewidgetscroll" title="DIAGNOSTICOS.">
+      <div
+        className="pulsewidgetscroll"
+        title="DIAGNOSTICOS."
+        style={{ display: carddiagnosticos == 1 ? 'flex' : 'none', }}
+      >
         <div className="title4 pulsewidgettitle">{'DIAGNÓSTICOS'}</div>
         <div
           className="pulsewidgetcontent"
@@ -1182,12 +1229,15 @@ function Prontuario() {
     );
   }
 
-  // exibição da lista de internações (tela principal).
+  // exibição da lista de internações e atendimentos (tela principal).
   function CardInternacoes() {
     return (
-      <div className="pulsewidgetscroll"
-        title="INTERNAÇÕES">
-        <div className="title4 pulsewidgettitle">{'HISTÓRICO DE INTERNAÇÕES'}</div>
+      <div
+        className="pulsewidgetscroll"
+        title="INTERNAÇÕES"
+        style={{ display: cardhistoricoatendimentos == 1 ? 'flex' : 'none', }}
+      >
+        <div className="title4 pulsewidgettitle">{'HISTÓRICO DE ATENDIMENTOS'}</div>
         <div className="pulsewidgetcontent" style={{ display: listatendimentos.length > 0 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'flex-start' }}>
           {listatendimentos.filter(value => value.idpaciente == idpaciente).map((item) => (
             <div
@@ -1262,9 +1312,9 @@ function Prontuario() {
         <div
           id="diagnósticos"
           className="conteudo">
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ height: '100%' }}
             id="LISTA DE DIAGNÓSTICOS"
           >
             {arraydiagnosticos.map((item) => (
@@ -1356,6 +1406,7 @@ function Prontuario() {
     return (
       <div className="pulsewidgetscroll"
         style={{
+          display: cardalertas == 1 ? 'flex' : 'none',
           backgroundColor: alertas.length > 1 ? '#ec7063' : '#52be80',
           borderColor: alertas.length > 1 ? '#ec7063' : '#52be80',
         }}
@@ -1500,12 +1551,12 @@ function Prontuario() {
     if (stateprontuario === 12) {
       return (
         <div
+          id="problemas"
           className="conteudo"
-          id="diagnósticos"
         >
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE PROBLEMAS"
           >
             {arrayproblemas.map((item) => (
@@ -1817,13 +1868,10 @@ function Prontuario() {
       return (
         <div id="evoluções"
           className="conteudo">
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE EVOLUÇÕES"
-            style={{
-              width: '100%',
-            }}
           >
             {arrayevolucao.map((item) => (
               <div
@@ -2235,9 +2283,9 @@ function Prontuario() {
           className="conteudo"
           id="propostas"
         >
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE PROPOSTAS DESKTOP"
             style={{
               width: '100%'
@@ -2524,9 +2572,9 @@ function Prontuario() {
           id="interconsultas"
           className="conteudo"
         >
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE INTERCONSULTAS"
           >
             {arrayinterconsultas.map((item) => (
@@ -2758,12 +2806,13 @@ function Prontuario() {
   const ShowLaboratorio = useCallback(() => {
     if (stateprontuario === 6) {
       return (
-        <div className="conteudo"
+        <div
           id="laboratório"
+          className="conteudo"
         >
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE EXAMES LABORATORIAIS"
           >
             {arraylaboratorio.map((item) => (
@@ -2973,9 +3022,9 @@ function Prontuario() {
           id="imagem"
           className="conteudo"
         >
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE EXAMES DE IMAGEM"          >
             {arrayimagem.map((item) => (
               <div
@@ -3319,9 +3368,9 @@ function Prontuario() {
         <div
           id="balanços"
           className="conteudo">
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE BALANÇOS"
           >
             {listbalancos.map((item) => (
@@ -3516,6 +3565,8 @@ function Prontuario() {
   const [viewformulario, setviewformulario] = useState(0);
 
   useEffect(() => {
+    // carregando configurações de visualização dos componentes.
+    loadSettings();
     setloadprincipal(1);
     setTimeout(() => {
       setloadprincipal(0);
@@ -3532,6 +3583,7 @@ function Prontuario() {
     setalertas([]);
     arrayalertas = [];
     // fechando as visualizações das telas secundárias (melhor aproximação até o momento).
+    setviewsettings(0);
     setviewevolucao(0);
     setviewprintevolucao(0);
     setviewprintformulario(0);
@@ -3555,16 +3607,50 @@ function Prontuario() {
     // eslint-disable-next-line
   }, [idatendimento])
 
+  // carregando configurações do banco de dados.
+  var x = [0, 1];
+  const loadSettings = () => {
+    axios.get(html + "/settings").then((response) => {
+      x = response.data;
+      setsettings(response.data);
+      viewSettings(x);
+    });
+  }
+  const viewSettings = (origem) => {
+    setmenuevolucoes(origem.filter(valor => valor.componente == "EVOLUÇÕES").map(valor => valor.view));
+    setmenudiagnosticos(origem.filter(valor => valor.componente == "DIAGNÓSTICOS").map(valor => valor.view));
+    setmenuproblemas(origem.filter(valor => valor.componente == "PROBLEMAS").map(valor => valor.view));
+    setmenupropostas(origem.filter(valor => valor.componente == "PROPOSTAS").map(valor => valor.view));
+    setmenuinterconsultas(origem.filter(valor => valor.componente == "INTERCONSULTAS").map(valor => valor.view));
+    setmenulaboratorio(origem.filter(valor => valor.componente == "LABORATÓRIO").map(valor => valor.view));
+    setmenuimagem(origem.filter(valor => valor.componente == "IMAGEM").map(valor => valor.view));
+    setmenuprescricao(origem.filter(valor => valor.componente == "PRESCRIÇÃO").map(valor => valor.view));
+    setmenuformularios(origem.filter(valor => valor.componente == "FORMULÁRIOS").map(valor => valor.view));
+    setcardinvasoes(origem.filter(valor => valor.componente == "INVASÕES").map(valor => valor.view));
+    setcardlesoes(origem.filter(valor => valor.componente == "LESÕES").map(valor => valor.view));
+    setcardstatus(origem.filter(valor => valor.componente == "STATUS").map(valor => valor.view));
+    setcardalertas(origem.filter(valor => valor.componente == "ALERTAS").map(valor => valor.view));
+    setcardprecaucao(origem.filter(valor => valor.componente == "PRECAUÇÃO").map(valor => valor.view));
+    setcardultimaevolucao(origem.filter(valor => valor.componente == "ÚLTIMA EVOLUÇÃO").map(valor => valor.view));
+    setcarddiagnosticos(origem.filter(valor => valor.componente == "DIAGNÓSTICO").map(valor => valor.view));
+    setcardhistoricoatb(origem.filter(valor => valor.componente == "HISTÓRICO DE ANTIBIÓTICOS").map(valor => valor.view));
+    setcardhistoricoatendimentos(origem.filter(valor => valor.componente == "HISTÓRICO DE ATENDIMENTOS").map(valor => valor.view));
+  }
+
+  useEffect(() => {
+    viewSettings(settings);
+  }, [settings])
+
   // animação para carregamento da tela principal.
   const [loadprincipal, setloadprincipal] = useState(0);
   const LoadPrincipal = useCallback(() => {
     return (
       <div
-        className="scroll"
         style={{
-          display: loadprincipal == 1 ? 'flex' : 'none',
-          borderRadius: 0, overflowY: 'scroll', paddingRight: 10, backgroundColor: '#ffffff', opacity: 0.5,
-          justifyContent: 'center', flexDirection: 'column',
+          display: loadprincipal == 1 && stateprontuario == 1 ? 'flex' : 'none',
+          position: 'absolute', top: '20vh', left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(255, 255, 255, 1)', opacity: 1,
+          alignItems: 'center', justifyContent: 'center',
         }}>
         <img
           className="pulsarlogo"
@@ -3574,6 +3660,7 @@ function Prontuario() {
             padding: 0,
             margin: 0,
             borderRadius: 0,
+            opacity: 0.3,
           }}
         ></img>
       </div>
@@ -3664,7 +3751,38 @@ function Prontuario() {
   - Tela principal;
   */
 
+  // botão para acesso às configurações de tela / settings.
+  function BtnSettings() {
+    return (
+      <button
+        className="grey-button"
+        title="CONFIGURAÇÕES."
+        onClick={(e) => { setviewsettings(1); e.stopPropagation() }}
+        style={{
+          display: tipousuario == 2 ? 'flex' : 'none',
+          minWidth: 50,
+          minHeight: 50,
+          width: 50,
+          height: 50,
+          marginLeft: 2.5, marginRight: 2.5,
+          padding: 5,
+        }}
+      >
+        <img
+          alt=""
+          src={settingsimg}
+          style={{
+            margin: 0,
+            height: 20,
+            width: 20,
+          }}
+        ></img>
+      </button>
+    )
+  }
+
   // IDENTIFICAÇÃO DO PACIENTE.
+  const [showdetalhes, setshowdetalhes] = useState(0);
   function Paciente() {
     return (
       <div
@@ -3706,21 +3824,46 @@ function Prontuario() {
                 {box}
               </button>
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left', width: '100%' }}>
-                <button
-                  className="rowitem"
-                  style={{
-                    marginLeft: tipounidade != 4 ? 0 : 5,
-                    marginRight: 0,
-                    marginBottom: 0,
-                    paddingBottom: 0,
-                    color: '#ffffff',
-                    alignSelf: 'flex-start',
-                    fontSize: window.innerWidth > 400 ? 18 : 14,
-                  }}
-                  id="inputNome"
-                >
-                  {nomepaciente}
-                </button>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', verticalAlign: 'center' }}>
+                  <button
+                    className="rowitem"
+                    style={{
+                      marginLeft: tipounidade != 4 ? 0 : 5,
+                      marginRight: 0,
+                      marginBottom: 0,
+                      paddingBottom: 0,
+                      color: '#ffffff',
+                      alignSelf: 'flex-start',
+                      fontSize: window.innerWidth > 400 ? 18 : 14,
+                    }}
+                    id="inputNome"
+                  >
+                    {nomepaciente}
+                  </button>
+                  <div style={{ position: 'relative' }}>
+                    <img
+                      id="info"
+                      // onMouseOver={() => document.getElementById("info").style.opacity = 1}
+                      // onMouseOut={() => document.getElementById("info").style.opacity = 0.8}
+                      onClick={(e) => {
+                        setshowdetalhes(1);
+                        e.stopPropagation();
+                      }}
+                      alt=""
+                      src={info}
+                      style={{
+                        position: 'relative',
+                        height: 20,
+                        padding: 0,
+                        margin: 5, marginTop: 6,
+                        borderRadius: 5,
+                        opacity: 0.8
+                      }}
+                    >
+                    </img>
+                    <DetalhesPaciente></DetalhesPaciente>
+                  </div>
+                </div>
                 <button
                   className="rowitem"
                   style={{
@@ -3730,7 +3873,6 @@ function Prontuario() {
                 >
                   {moment().diff(moment(dn, 'DD/MM/YYYY'), 'years') < 2 ? + moment().diff(moment(dn, 'DD/MM/YYYY'), 'years') + ' ANO' : moment().diff(moment(dn, 'DD/MM/YYYY'), 'years') + ' ANOS'}
                 </button>
-
                 <div
                   style={{
                     display: window.innerWidth > 400 ? 'none' : 'flex',
@@ -3763,7 +3905,7 @@ function Prontuario() {
                     ></img>
                   </Link>
                   <Link
-                    to="/gpulse-web"
+                    to="/gpulse"
                     className="grey-button"
                     title="FAZER LOGOFF."
                     style={{
@@ -3835,8 +3977,9 @@ function Prontuario() {
                 }}
               ></img>
             </Link>
+            <BtnSettings></BtnSettings>
             <Link
-              to="/gpulse-web"
+              to="/gpulse"
               className="grey-button"
               title="FAZER LOGOFF."
               style={{
@@ -3861,6 +4004,24 @@ function Prontuario() {
         </div>
       </div>
     );
+  }
+  function DetalhesPaciente() {
+    return (
+      <div className="widget fade-in"
+        onClick={(e) => { setshowdetalhes(0); e.stopPropagation() }}
+        style={{
+          display: showdetalhes == 1 ? 'flex' : 'none', justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'flex-start',
+          position: 'absolute', top: 10, left: 10,
+          width: '40vw', zIndex: 3,
+        }}>
+        <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'PRONTUÁRIO: ' + idpaciente}</div>
+        <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'ATENDIMENTO: ' + idatendimento}</div>
+        <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'DN: ' + dn}</div>
+        <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'NOME DA MÃE: ' + nomemae}</div>
+        <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'CONTATO: ' + contato}</div>
+        <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'ENDEREÇO: ' + endereço}</div>
+      </div>
+    )
   }
 
   // importando informações do último atendimento, caso o sistema identifique uma história em branco.
@@ -3973,6 +4134,7 @@ function Prontuario() {
               className="blue-button"
               onClick={() => clickEvoluções()}
               style={{
+                display: menuevolucoes == 1 ? 'flex' : 'none',
                 width: 200,
                 height: 50,
                 margin: 5,
@@ -4039,11 +4201,10 @@ function Prontuario() {
 
   // PAINEL PRINCIPAL.
   function Principal() {
-    if (stateprontuario === 1 && loadprincipal == 0) {
+    if (stateprontuario === 1) {
       return (
         <div id="painel principal"
-          className="scroll"
-          style={{ borderRadius: 0, overflowY: 'scroll', paddingRight: 10 }}
+          className="scroll" style={{ width: '100%' }}
         >
           <div
             className="secondary"
@@ -4062,17 +4223,16 @@ function Prontuario() {
               paddingRight: 0,
             }}
           >
+            <CardInvasoes></CardInvasoes>
+            <CardLesoes></CardLesoes>
             <CardStatus></CardStatus>
             <CardAlertas></CardAlertas>
             <CardPrecaucao></CardPrecaucao>
             <CardDiasdeInternacao></CardDiasdeInternacao>
             <CardEvolucoes></CardEvolucoes>
-            <CardInvasoes></CardInvasoes>
             <CardDiagnosticos></CardDiagnosticos>
-            <CardLesoes></CardLesoes>
             <CardAntibioticos></CardAntibioticos>
             <CardInternacoes></CardInternacoes>
-
           </div>
           <div
             id="ANAMNESE"
@@ -4098,24 +4258,38 @@ function Prontuario() {
                 width: '100%'
               }}
             >
-              <textarea
-                className="textarea"
-                disabled="true"
-                style={{ width: '100%', height: 140 }}
-                id="inputAp"
-                title="ANTECEDENTES PESSOAIS."
-              >
-                {'ANTECEDENTES PESSOAIS: ' + antecedentes}
-              </textarea>
-              <textarea
-                className="textarea"
-                disabled="true"
-                style={{ width: '100%', height: 140 }}
-                id="inputAlergias"
-                title="ALERGIAS."
-              >
-                {'ALERGIAS: ' + alergias}
-              </textarea>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <div className="title2center" style={{ color: '#8f9bbc' }}>
+                  {window.innerWidth > 400 ? 'ANTECEDENTES PESSOAIS' : 'ANTECEDENTES'}
+                </div>
+                <textarea
+                  className="textarea"
+                  onMouseLeave={() => {
+                    setantecedentes(document.getElementById("inputAp").value);
+                    updateAtendimento();
+                  }}
+                  style={{ width: '100%', height: 140 }}
+                  id="inputAp"
+                  title="ANTECEDENTES PESSOAIS."
+                >
+                  {antecedentes}
+                </textarea>
+              </div>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <div className="title2center" style={{ color: '#8f9bbc' }}>ALERGIAS</div>
+                <textarea
+                  className="textarea"
+                  onMouseLeave={() => {
+                    setalergias(document.getElementById("inputAlergias").value);
+                    updateAtendimento();
+                  }}
+                  style={{ width: '100%', height: 140 }}
+                  id="inputAlergias"
+                  title="ALERGIAS."
+                >
+                  {alergias}
+                </textarea>
+              </div>
             </div>
             <div
               style={{
@@ -4126,42 +4300,61 @@ function Prontuario() {
                 width: '100%'
               }}
             >
-              <textarea
-                className="textarea"
-                disabled="true"
-                style={{ width: '100%', height: 140 }}
-                id="inputMedprev"
-                title="MEDICAÇÕES PRÉVIAS."
-              >
-                {'MEDICAÇÕES DE USO CONTÍNUO: ' + medicacoes}
-              </textarea>
-              <textarea
-                className="textarea"
-                disabled="true"
-                style={{ width: '100%', height: 140 }}
-                id="inputExprev"
-                title="EXAMES PRÉVIOS."
-              >
-                {'EXAMES PRÉVIOS: ' + exames}
-              </textarea>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <div className="title2center" style={{ color: '#8f9bbc' }}>
+                  {window.innerWidth > 400 ? 'MEDICAÇÕES DE USO PRÉVIO' : 'MEDICAÇÕES'}
+                </div>
+                <textarea
+                  className="textarea"
+                  onMouseLeave={() => {
+                    setmedicacoes(document.getElementById("inputMedprev").value);
+                    updateAtendimento();
+                  }}
+                  style={{ width: '100%', height: 140 }}
+                  id="inputMedprev"
+                  title="MEDICAÇÕES PRÉVIAS."
+                >
+                  {medicacoes}
+                </textarea>
+              </div>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <div className="title2center" style={{ color: '#8f9bbc' }}>EXAMES PRÉVIOS</div>
+                <textarea
+                  className="textarea"
+                  onMouseLeave={() => {
+                    setexames(document.getElementById("inputExprev").value);
+                    updateAtendimento();
+                  }}
+                  style={{ width: '100%', height: 140 }}
+                  id="inputExprev"
+                  title="EXAMES PRÉVIOS."
+                >
+                  {exames}
+                </textarea>
+              </div>
             </div>
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 margin: 0,
+                padding: 5,
                 justifyContent: 'center',
                 width: '100%'
               }}
             >
+              <div className="title2center" style={{ color: '#8f9bbc' }}>HISTÓRIA DA DOENÇA ATUAL</div>
               <textarea
                 className="textarea"
-                disabled="true"
+                onMouseLeave={() => {
+                  sethistoria(document.getElementById("inputHda").value);
+                  updateAtendimento();
+                }}
                 style={{ width: '100%', height: 140 }}
                 id="inputHda"
                 title="HISTÓRIA DA DOENÇA ATUAL."
               >
-                {'HISTÓRIA DA DOENÇA ATUAL: ' + historia}
+                {historia}
               </textarea>
             </div>
           </div>
@@ -4182,7 +4375,11 @@ function Prontuario() {
   // EXIBIR LISTA DE ANTIBIÓTICOS USADOS.
   function CardAntibioticos() {
     return (
-      <div className="pulsewidgetscroll" id="LISTA DE ANTIBIÓTICOS PRESCRITOS">
+      <div
+        className="pulsewidgetscroll"
+        id="LISTA DE ANTIBIÓTICOS PRESCRITOS"
+        style={{ display: cardhistoricoatb == 1 ? 'flex' : 'none', }}
+      >
         <div className="title4 pulsewidgettitle">{'HISTÓRICO DE ANTIBIÓTICOS'}</div>
         <div className="pulsewidgetcontent" style={{ display: atblist.length > 0 ? 'flex' : 'none' }}>
           {atblist.map((item) => (
@@ -4241,6 +4438,7 @@ function Prontuario() {
         title="STATUS DO PACIENTE."
         onClick={tipousuario != 4 ? () => showChangeStatus() : null} // técnico
         style={{
+          display: cardstatus == 1 ? 'flex' : 'none',
           backgroundColor: status == 3 ? '#52be80' : status == 2 ? '#f5b041' : status == 1 ? '#ec7063' : status == 0 ? 'grey' : 'purple'
         }}
       >
@@ -4257,38 +4455,11 @@ function Prontuario() {
     if (viewstatus === 1) {
       return (
         <div
-          className="secondary"
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            borderRadius: 0,
-            position: 'fixed',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '100%',
-            width: '100%',
-            marginTop: 0,
-            marginBottom: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            zIndex: 9,
-          }}
+          className="menucover"
         >
           <div>
             <div
-              className="secondary"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                backgroundColor: '#FFFFFF',
-                borderRadius: 5,
-                paddingTop: 30,
-                paddingBottom: 30,
-                paddingLeft: 30,
-                paddingRight: 30,
-              }}
+              className="menucontainer" style={{ padding: 20 }}
             >
               <label
                 className="title2"
@@ -4379,6 +4550,7 @@ function Prontuario() {
         title="PRECAUÇÃO OU ISOLAMENTO DE CONTATO."
         onClick={tipousuario != 4 ? () => showChangePrecaucao(0) : null}
         style={{
+          display: cardprecaucao == 1 ? 'flex' : 'none',
           backgroundColor: precaucao === 1 ? "#8f9bbc" : precaucao === 2 ? "#f5b041" : precaucao === 3 ? "#bb8fce" : "#ec7063"
         }}
       >
@@ -4480,7 +4652,8 @@ function Prontuario() {
   function CardDiasdeInternacao() {
     return (
       <div
-        className="pulsewidgetstatic" style={{ backgroundColor: '#8f9bbc' }}
+        className="pulsewidgetstatic"
+        style={{ backgroundColor: '#8f9bbc', display: carddiasinternacao == 1 ? 'flex' : 'none', }}
         id="DIAS DE INTERNAÇÃO"
       >
         <p
@@ -4498,6 +4671,7 @@ function Prontuario() {
 
   // função que atualiza o paciente.
   const updateAtendimento = () => {
+    setloadprincipal(1);
     var obj = {
       idpaciente: idpaciente,
       hospital: nomehospital,
@@ -4520,7 +4694,9 @@ function Prontuario() {
       precaucao: prec,
       assistente: assistente,
     };
-    axios.post(html + '/updateatendimento/' + idatendimento, obj);
+    axios.post(html + '/updateatendimento/' + idatendimento, obj).then(() => {
+      setloadprincipal(0);
+    });
   };
 
   // encerrando consulta ambulatorial.
@@ -4557,6 +4733,7 @@ function Prontuario() {
     return (
       <div id="cardinvasao"
         className="pulsewidgetbody"
+        style={{ display: cardinvasoes == 1 ? 'flex' : 'none' }}
         onMouseOver={() => {
           document.getElementById("cardinvasao").className = "pulsewidgetbodyhover"
         }}
@@ -4591,7 +4768,7 @@ function Prontuario() {
   // card lesoes.
   function CardLesoes() {
     return (
-      <div id="cardlesao"
+      <div id="cardlesao" style={{ display: cardlesoes == 1 ? 'flex' : 'none' }}
         className="pulsewidgetbody"
         title="LESÕES DE PRESSÃO"
         onMouseOver={() => {
@@ -4630,6 +4807,7 @@ function Prontuario() {
       <div
         id="EVOLUÇÃO E EXAME FÍSICO"
         title="ÚLTIMA EVOLUÇÃO E CONTROLES."
+        style={{ display: cardultimaevolucao == 1 ? 'flex' : 'none' }}
         className="pulsewidgetscroll">
         <div className="title4 pulsewidgettitle">
           {'ÚLTIMA EVOLUÇÃO E CONTROLES'}
@@ -4952,6 +5130,7 @@ function Prontuario() {
           <div
             id="menuEvolucoes"
             className="menuitemanimation"
+            style={{ display: menuevolucoes == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnEvolucoes"
@@ -4984,6 +5163,7 @@ function Prontuario() {
           <div
             id="menuDiagnosticos"
             className="menuitemanimation"
+            style={{ display: menudiagnosticos == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnDiagnosticos"
@@ -5019,6 +5199,7 @@ function Prontuario() {
           <div
             id="menuProblemas"
             className="menuitemanimation"
+            style={{ display: menuproblemas == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnProblemas"
@@ -5054,6 +5235,7 @@ function Prontuario() {
           <div
             id="menuProprostas"
             className="menuitemanimation"
+            style={{ display: menupropostas == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnPropostas"
@@ -5089,6 +5271,7 @@ function Prontuario() {
           <div
             id="menuInterconsultas"
             className="menuitemanimation"
+            style={{ display: menuinterconsultas == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnInterconsultas"
@@ -5124,6 +5307,7 @@ function Prontuario() {
           <div
             id="menuLaboratorio"
             className="menuitemanimation"
+            style={{ display: menulaboratorio == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnLaboratorio"
@@ -5159,6 +5343,7 @@ function Prontuario() {
           <div
             id="menuImagens"
             className="menuitemanimation"
+            style={{ display: menuimagem == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnImagens"
@@ -5229,7 +5414,7 @@ function Prontuario() {
           <div
             id="menuPrescricao"
             className="menuitemanimation"
-            style={{ display: tipousuario != 4 ? 'flex' : 'none' }}
+            style={{ display: tipousuario != 4 && menuprescricao == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnPrescricoes"
@@ -5263,7 +5448,7 @@ function Prontuario() {
           <div
             id="menuCheckPrescricoes"
             className="menuitemanimation"
-            style={{ display: tipousuario == 4 ? 'flex' : 'none' }}
+            style={{ display: tipousuario == 4 && menuprescricao == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnCheckPrescricoes"
@@ -5291,13 +5476,13 @@ function Prontuario() {
           <div
             id="menuFormularios"
             className="menuitemanimation"
+            style={{ display: menuformularios == 1 ? 'flex' : 'none' }}
           >
             <button
               id="btnFormularios"
               className="blue-button"
               onClick={() => { clickFormularios(); setActive("btnFormularios", "btnAddFormularios"); }}
               style={{
-                disabled: tipousuario == 4 ? true : false,
                 opacity: tipousuario == 4 ? 0.3 : 1,
                 width: '100%',
                 height: 50,
@@ -5325,7 +5510,7 @@ function Prontuario() {
         </div>
       </div >
     );
-  }, []
+  }, [menuevolucoes, menudiagnosticos, menuproblemas, menupropostas, menuinterconsultas, menulaboratorio, menuimagem]
   );
 
   // INVASÕES.
@@ -7479,7 +7664,14 @@ function Prontuario() {
   function ShowInvasoes() {
     return (
       <div
-        style={{ position: 'relative', disabled: tipousuario != 'TEC' ? true : false }}
+        disabled={tipousuario == 4 ? true : false}
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          width: '100%'
+        }}
       >
         <div
           id="invasoes"
@@ -7500,8 +7692,8 @@ function Prontuario() {
             id="ancora"
             className="boneco"
             style={{
-              width: window.innerWidth > 800 ? 0.18 * window.innerWidth : '90%',
-              height: window.innerWidth < 800 ? 0.85 * window.innerHeight : '90%',
+              width: window.innerWidth > 800 ? 0.18 * window.innerWidth : '100%',
+              height: window.innerWidth < 800 ? 0.85 * window.innerHeight : '100%',
               marginBottom: window.innerWidth > 800 ? 0 : 5,
             }}
           >
@@ -7539,7 +7731,7 @@ function Prontuario() {
   };
 
   // function Cabeçalho.
-  function Identificacao() {
+  function Filtros() {
     return (
       <div id="CABEÇALHO + IDENTIFICAÇÃO"
         style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 10, margin: 0, width: '100%' }}>
@@ -7760,9 +7952,9 @@ function Prontuario() {
           id="formulários"
           className="conteudo"
         >
-          <Identificacao></Identificacao>
+          <Filtros></Filtros>
           <div
-            className="scroll"
+            className="scroll" style={{ width: '100%' }}
             id="LISTA DE FORMULÁRIOS"
           >
             {arrayformularios.map((item) => (
@@ -7994,7 +8186,16 @@ function Prontuario() {
   // exibição do boneco com as lesões de pressão.
   function ShowLesoes() {
     return (
-      <div style={{ position: 'relative' }} disabled={tipousuario == 4 ? true : false}>
+      <div
+        disabled={tipousuario == 4 ? true : false}
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          width: '100%'
+        }}
+      >
         <div
           id="lesões"
           style={{
@@ -8528,7 +8729,7 @@ function Prontuario() {
         <div className="menucover" style={{ zIndex: 9, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
           <div className="menucontainer">
             <div
-              className="scroll"
+              className="scroll" style={{ width: '100%' }}
               id="LISTA DE CURATIVOS"
               style={{
                 display: 'flex',
@@ -9576,7 +9777,7 @@ function Prontuario() {
         onMouseOut={() => document.getElementById("sidebar").className = "pacientes-menu-out"}
         style={{
           display: tipounidade != 4 && window.innerWidth > 800 ? 'flex' : 'none',
-          width: 300,
+          width: '30vw',
           position: 'absolute',
           padding: 10, paddingLeft: 0,
           zIndex: 50,
@@ -9585,16 +9786,16 @@ function Prontuario() {
         <div
           className="widget"
           style={{
-            flexDirection: 'column', margin: 0,
+            flexDirection: 'column', justifyContent: 'center', margin: 0,
             borderRadius: 5, borderTopLeftRadius: 0, borderBottomLeftRadius: 0,
-            width: 300,
+            width: '100%',
             height: '100%',
             padding: 10, paddingLeft: 0,
             boxShadow: '0 0 0.5em black',
           }}
         >
           <div className="title2" style={{ color: "#ffffff" }}>{'LISTA DE PACIENTES:  ' + nomeunidade}</div>
-          <div className="scrolldrop" style={{ height: 0.8 * window.innerHeight, width: '100%', justifyContent: 'flex-start', borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
+          <div className="scroll" style={{ height: '80vh', width: '100%', justifyContent: 'flex-start', borderTopLeftRadius: 0, borderBottomLeftRadius: 0, paddingLeft: 7.5 }}>
             {listatendimentos.filter(item => item.hospital == nomehospital && item.unidade == nomeunidade && item.ativo > 0).map((item) => (
               <div
                 key={item.id}
@@ -9636,18 +9837,6 @@ function Prontuario() {
       className="main fade-in"
       id="PRINCIPAL"
       onMouseMove={(e) => { showSideBar(e) }}
-      style={{
-        display: 'flex',
-        margin: 0,
-        padding: 0,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-        overflowX: 'hidden',
-        overflowY: 'hidden',
-      }}
     >
       <div
         style={{
@@ -9925,6 +10114,7 @@ function Prontuario() {
         <Menu></Menu>
         <SideBar></SideBar>
         <UpdateAtendimento viewupdateatendimento={viewupdateatendimento}></UpdateAtendimento>
+        <Settings></Settings>
         <GetSpeech></GetSpeech>
         <ShowSpeech></ShowSpeech>
       </div>
