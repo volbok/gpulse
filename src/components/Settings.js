@@ -39,6 +39,8 @@ function Settings() {
     cardhistoricoatb, setcardhistoricoatb,
     cardhistoricoatendimentos, setcardhistoricoatendimentos,
     cardanamnese, setcardanamnese,
+    // colorscheme.
+    schemecolor, setschemecolor
   } = useContext(Context);
 
   // carregando configurações do banco de dados.
@@ -63,6 +65,16 @@ function Settings() {
       view: view,
     };
     axios.post(html + '/updatesettings/' + item.id, obj).then(() => {
+      loadSettings();
+    });
+  }
+
+  const updateColorScheme = (value) => {
+    var obj = {
+      componente: "COLORSCHEME",
+      view: value,
+    };
+    axios.post(html + '/updatesettings/' + 20, obj).then(() => { // 20 é o id do registro de esquema de cores na tabela.
       loadSettings();
     });
   }
@@ -136,7 +148,7 @@ function Settings() {
 
   return (
     <div className="menucover" style={{ display: viewsettings == 1 ? 'flex' : 'none' }}>
-      <div className="menucontainer">
+      <div className="menucontainer" style={{ width: '90vw' }}>
         <div className="cabecalho">
           <div>{'CONFIGURAÇÕES DE VISUALIZAÇÃO'}</div>
           <div id="botões" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -153,143 +165,155 @@ function Settings() {
             </button>
           </div>
         </div>
-        <div className="corpo" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '80vw', height: '60vh' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className="title4">{showmenu == 1 ? 'BOTÕES DO MENU' : 'WIDGETS DA TELA PRINCIPAL'}</div>
-            <div id="gráfico" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-              <div
-                id="menu"
-                title="BOTÕES DO MENU PRINCIPAL."
-                className="grey-button"
-                onClick={() => {
-                  setshowmenu(1);
-                  setshowcards(0);
-                  document.getElementById("menu").style.opacity = 1
-                  document.getElementById("cards").style.opacity = 0.3
-                }}
-                style={{
-                  margin: 2.5,
-                  height: 150,
-                  minHeight: 150,
-                  width: 100,
-                  minWidth: 100,
-                  maxWidth: 100,
-                }}
-              >
-                <div className="blue-button"
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div className="title4">ESQUEMA DE CORES</div>
+          <div id="ESQUEMA DE CORES" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            <button
+              className="blue-button"
+              style={{ width: 100, height: 100, backgroundColor: '#7fb3d5' }}
+              onClick={() => updateColorScheme(2)}
+            >
+              BLUE
+            </button>
+            <button
+              className="blue-button"
+              style={{ width: 100, height: 100, backgroundColor: '#8f9bbc' }}
+              onClick={() => updateColorScheme(1)}
+            >
+              PURPLE
+            </button>
+          </div>
+          <div className="corpo" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '80vw', height: '60vh' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div className="title4">{showmenu == 1 ? 'BOTÕES DO MENU' : 'WIDGETS DA TELA PRINCIPAL'}</div>
+              <div id="gráfico" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                <div
+                  id="menu"
+                  title="BOTÕES DO MENU PRINCIPAL."
+                  className="grey-button"
+                  onClick={() => {
+                    setshowmenu(1);
+                    setshowcards(0);
+                    document.getElementById("menu").style.opacity = 1
+                    document.getElementById("cards").style.opacity = 0.3
+                  }}
                   style={{
-                    minWidth: 80,
-                    width: 80,
-                    maxWidth: 80,
-                    minHeight: 40,
-                    height: 40,
-                    maxHeight: 40,
-                    borderRadius: 5,
-                    backgroundColor: '#8f9bbc'
-                  }}>
+                    margin: 2.5,
+                    height: 150,
+                    minHeight: 150,
+                    width: 100,
+                    minWidth: 100,
+                    maxWidth: 100,
+                  }}
+                >
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 80,
+                      width: 80,
+                      maxWidth: 80,
+                      minHeight: 40,
+                      height: 40,
+                      maxHeight: 40,
+                      borderRadius: 5,
+                    }}>
+                  </div>
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 80,
+                      width: 80,
+                      maxWidth: 80,
+                      minHeight: 40,
+                      height: 40,
+                      maxHeight: 40,
+                      borderRadius: 5,
+                    }}>
+                  </div>
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 80,
+                      width: 80,
+                      maxWidth: 80,
+                      minHeight: 40,
+                      height: 40,
+                      maxHeight: 40,
+                      borderRadius: 5,
+                    }}>
+                  </div>
                 </div>
-                <div className="blue-button"
+                <div
+                  id="cards"
+                  title="WIDGETS DA TELA PRINCIPAL."
+                  onClick={() => {
+                    setshowmenu(0);
+                    setshowcards(1);
+                    document.getElementById("menu").style.opacity = 0.3
+                    document.getElementById("cards").style.opacity = 1
+                  }}
+                  className="grey-button"
                   style={{
-                    minWidth: 80,
-                    width: 80,
-                    maxWidth: 80,
-                    minHeight: 40,
-                    height: 40,
-                    maxHeight: 40,
-                    borderRadius: 5,
-                    backgroundColor: '#8f9bbc'
-                  }}>
-                </div>
-                <div className="blue-button"
-                  style={{
-                    minWidth: 80,
-                    width: 80,
-                    maxWidth: 80,
-                    minHeight: 40,
-                    height: 40,
-                    maxHeight: 40,
-                    borderRadius: 5,
-                    backgroundColor: '#8f9bbc'
-                  }}>
-                </div>
-              </div>
-              <div
-                id="cards"
-                title="WIDGETS DA TELA PRINCIPAL."
-                onClick={() => {
-                  setshowmenu(0);
-                  setshowcards(1);
-                  document.getElementById("menu").style.opacity = 0.3
-                  document.getElementById("cards").style.opacity = 1
-                }}
-                className="grey-button"
-                style={{
-                  margin: 2.5,
-                  height: 150,
-                  minHeight: 150,
-                  width: 150,
-                  minWidth: 150,
-                  maxWidth: 150,
-                  backgroundColor: '#f2f2f2',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-evenly',
-                  flexDirection: 'row',
-                }}
-              >
-                <div className="blue-button"
-                  style={{
-                    minWidth: 50,
-                    width: 50,
-                    maxWidth: 50,
-                    minHeight: 50,
-                    height: 50,
-                    maxHeight: 50,
-                    borderRadius: 5,
-                    backgroundColor: 'darkgray',
-                  }}>
-                </div>
-                <div className="blue-button"
-                  style={{
-                    minWidth: 50,
-                    width: 50,
-                    maxWidth: 50,
-                    minHeight: 50,
-                    height: 50,
-                    maxHeight: 50,
-                    borderRadius: 5,
-                    backgroundColor: 'darkgray'
-                  }}>
-                </div>
-                <div className="blue-button"
-                  style={{
-                    minWidth: 50,
-                    width: 50,
-                    maxWidth: 50,
-                    minHeight: 50,
-                    height: 50,
-                    maxHeight: 50,
-                    borderRadius: 5,
-                    backgroundColor: 'darkgray'
-                  }}>
-                </div>
-                <div className="blue-button"
-                  style={{
-                    minWidth: 50,
-                    width: 50,
-                    maxWidth: 50,
-                    minHeight: 50,
-                    height: 50,
-                    maxHeight: 50,
-                    borderRadius: 5,
-                    backgroundColor: 'darkgray'
-                  }}>
+                    margin: 2.5,
+                    height: 150,
+                    minHeight: 150,
+                    width: 150,
+                    minWidth: 150,
+                    maxWidth: 150,
+                    backgroundColor: 'transparent',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-evenly',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 50,
+                      width: 50,
+                      maxWidth: 50,
+                      minHeight: 50,
+                      height: 50,
+                      maxHeight: 50,
+                      borderRadius: 5,
+                    }}>
+                  </div>
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 50,
+                      width: 50,
+                      maxWidth: 50,
+                      minHeight: 50,
+                      height: 50,
+                      maxHeight: 50,
+                      borderRadius: 5,
+                    }}>
+                  </div>
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 50,
+                      width: 50,
+                      maxWidth: 50,
+                      minHeight: 50,
+                      height: 50,
+                      maxHeight: 50,
+                      borderRadius: 5,
+                    }}>
+                  </div>
+                  <div className="blue-button"
+                    style={{
+                      minWidth: 50,
+                      width: 50,
+                      maxWidth: 50,
+                      minHeight: 50,
+                      height: 50,
+                      maxHeight: 50,
+                      borderRadius: 5,
+                    }}>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div id="listas de compoenentes" style={{ width: '50vw', maxHeight: '50vh', margin: 20, padding: 10 }}>
-            <Cards></Cards>
-            <Menu></Menu>
+            <div id="listas de componentes" style={{ width: '50vw', maxHeight: '50vh', margin: 20, padding: 10 }}>
+              <Cards></Cards>
+              <Menu></Menu>
+            </div>
           </div>
         </div>
       </div>

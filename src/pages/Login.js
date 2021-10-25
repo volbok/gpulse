@@ -2,8 +2,8 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useEffect, useContext } from 'react'
-import logoinverted from '../images/newlogoinverted.svg'
-import logo from '../images/newlogo.svg'
+import Logo from '../components/Logo'
+import LogoInverted from '../components/LogoInverted'
 import ghap from '../images/ghap.PNG'
 import Toast from '../components/Toast'
 import { useHistory } from 'react-router-dom'
@@ -207,16 +207,9 @@ function Login() {
           alignItems: 'center',
         }}
       >
-        <img
-          alt=""
-          src={logoinverted}
-          style={{
-            display: window.innerWidth > 800 ? 'flex' : 'none',
-            height: '35%',
-          }}
-        ></img>
+        <LogoInverted height={0.18 * window.innerWidth} width={0.18 * window.innerWidth}></LogoInverted>
         <div
-          className="title4" style={{fontSize: 26}}
+          className="title4" style={{ fontSize: 26 }}
         >
           gPulse
         </div>
@@ -234,13 +227,13 @@ function Login() {
         </div>
       </div>
       <div
+        className="corprincipal"
         style={{
           position: 'absolute',
           top: 0,
           bottom: 0,
           right: 0,
           width: window.innerWidth > 800 ? '50%' : '100%',
-          backgroundColor: '#8f9bbc',
           borderRadius: 5,
           margin: window.innerWidth > 800 ? 10 : 0,
           display: 'flex',
@@ -250,10 +243,14 @@ function Login() {
           boxShadow: window.innerWidth > 800 ? '0px 1px 5px 1px rgba(0, 0, 0, 0.3)' : 'none',
         }}
       >
+        <div style={{ display: window.innerWidth < 400 ? 'flex' : 'none', marginBottom: 50 }}>
+          <Logo height={150} width={150}></Logo>
+        </div>
         <img
           alt=""
-          src={window.innerWidth > 800 ? ghap : logo}
+          src={ghap}
           style={{
+            display: window.innerWidth > 400 ? 'flex' : 'none',
             height: '20%',
             marginTop: window.innerWidth > 800 ? 0 : 0,
             marginBottom: window.innerWidth > 800 ? 0 : 60,

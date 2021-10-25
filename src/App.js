@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import Context from './Context'
+import axios from 'axios'
 import {
   BrowserRouter as Router,
   Switch,
@@ -32,6 +33,7 @@ import Unidades from './pages/Unidades'
 
 // importando componentes.
 import UpdateAtendimento from './components/UpdateAtendimento'
+import Settings from './components/Settings'
 
 // função que encapsula todos os componentes de páginas e coordena o iddle-timeout.
 function IddleTimeOut() {
@@ -104,7 +106,7 @@ function IddleTimeOut() {
 
   return (
     <div
-      className="main"
+      className={"main"}
       translate="no"
       onTouchEnd={(e) => disablePinchZoom(e)}
     >
@@ -242,7 +244,25 @@ function App() {
   const [cardhistoricoatb, setcardhistoricoatb] = useState(0);
   const [cardhistoricoatendimentos, setcardhistoricoatendimentos] = useState(0);
   const [cardanamnese, setcardanamnese] = useState(0);
-  
+  // color scheme.
+  const [schemecolor, setschemecolor] = useState("purplescheme");
+
+  var html = 'https://pulsarapp-server.herokuapp.com';
+  const loadSettings = () => {
+    axios.get(html + "/settings").then((response) => {
+      var x = [0, 1];
+      x = response.data;
+      setsettings(response.data);
+      // definindo as cores da aplicação.
+      var paleta = x.filter(valor => valor.componente == "COLORSCHEME").map(valor => valor.view);
+      setschemecolor(paleta == 1 ? 'purplescheme' : 'bluescheme');
+    });
+  }
+
+  useEffect(() => {
+    loadSettings();
+  }, [])
+
   return (
     <Context.Provider
       value={{
@@ -322,12 +342,17 @@ function App() {
         carddiagnosticos, setcarddiagnosticos,
         cardlesoes, setcardlesoes,
         cardhistoricoatb, setcardhistoricoatb,
-        cardhistoricoatendimentos, setcardhistoricoatendimentos
+        cardhistoricoatendimentos, setcardhistoricoatendimentos,
+        cardanamnese, setcardanamnese,
+        // color scheme.
+        schemecolor, setschemecolor,
       }}
     >
-      <Router>
-        <IddleTimeOut translate="no"></IddleTimeOut>
-      </Router>
+      <div className={schemecolor}>
+        <Router>
+          <IddleTimeOut translate="no"></IddleTimeOut>
+        </Router>
+      </div>
     </Context.Provider>
   )
 }

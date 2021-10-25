@@ -66,12 +66,13 @@ function Unidades() {
   function ShowUnidades() {
     return (
       <div
-        className="scroll" style={{ alignItems: 'center' }}
+        className="scroll"
         id="LISTA DE UNIDADES"
         style={{
           height: '82vh', maxHeight: '82vh',
           flexDirection: window.innerWidth < 400 ? 'column' : 'row',
           flexWrap: window.innerWidth < 400 ? 'nowrap' : 'wrap',
+          backgroundColor: 'transparent', borderColor: 'transparent'
         }}
       >
         {unidades.map((item) => GetData(item))}
@@ -824,7 +825,7 @@ function Unidades() {
             display: renderchart == 1 ? 'flex' : 'none',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            // alignSelf: window.innerWidth > 400 ? 'flex-start' : 'center',
             borderRadius: 5,
             padding: 10,
             width: window.innerWidth < 400 ? '95%' : '21vw',
@@ -1047,7 +1048,7 @@ function Unidades() {
             display: renderchart == 1 ? 'flex' : 'none',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            // alignSelf: window.innerWidth > 400 ? 'flex-start' : 'center',
             borderRadius: 5,
             padding: 10,
             width: window.innerWidth < 800 ? '95%' : '21vw',
@@ -1248,7 +1249,7 @@ function Unidades() {
             display: renderchart == 1 ? 'flex' : 'none',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            // alignSelf: window.innerWidth > 400 ? 'flex-start' : 'center',
             borderRadius: 5,
             padding: 10,
             width: window.innerWidth < 800 ? '95%' : '21vw',

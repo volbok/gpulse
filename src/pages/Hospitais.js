@@ -27,12 +27,13 @@ function Hospitais() {
   function ShowHospitais() {
     return (
       <div
-        className="scroll" style={{ alignItems: 'center' }}
+        className="scroll"
         id="LISTA DE HOSPITAIS"
         style={{
           height: '82vh', maxHeight: '82vh',
           flexDirection: window.innerWidth < 400 ? 'column' : 'row',
           flexWrap: window.innerWidth < 400 ? 'nowrap' : 'wrap',
+          backgroundColor: 'transparent', borderColor: 'transparent'
         }}
       >
         {hospitais.map((item) => GetData(item))}
@@ -136,10 +137,10 @@ function Hospitais() {
           display: renderchart == 1 ? 'flex' : 'none',
           flexDirection: 'column',
           alignItems: 'center',
-          alignSelf: 'flex-start',
+          alignSelf: window.innerWidth > 400 ? 'flex-start' : 'center',
           borderRadius: 5,
           padding: 20,
-          width: window.innerWidth < 400 ? '95%' : '21vw',
+          width: window.innerWidth < 400 ? '' : '21vw',
         }}
       >
         <div

@@ -129,7 +129,9 @@ function Prontuario() {
     carddiagnosticos, setcarddiagnosticos,
     cardhistoricoatb, setcardhistoricoatb,
     cardhistoricoatendimentos, setcardhistoricoatendimentos,
-
+    cardanamnese, setcardanamnese,
+    // colorcheme.
+    schemecolor, setschemecolor,
   } = useContext(Context)
   // history (react-router-dom).
   let history = useHistory()
@@ -1237,7 +1239,7 @@ function Prontuario() {
         title="INTERNAÇÕES"
         style={{ display: cardhistoricoatendimentos == 1 ? 'flex' : 'none', }}
       >
-        <div className="title4 pulsewidgettitle">{'HISTÓRICO DE ATENDIMENTOS'}</div>
+        <div className="title4 pulsewidgettitle">{window.innerWidth > 400 ? 'HISTÓRICO DE ATENDIMENTOS' : 'ATEND.'}</div>
         <div className="pulsewidgetcontent" style={{ display: listatendimentos.length > 0 ? 'flex' : 'none', flexDirection: 'column', justifyContent: 'flex-start' }}>
           {listatendimentos.filter(value => value.idpaciente == idpaciente).map((item) => (
             <div
@@ -1314,7 +1316,8 @@ function Prontuario() {
           className="conteudo">
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ height: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE DIAGNÓSTICOS"
           >
             {arraydiagnosticos.map((item) => (
@@ -1556,7 +1559,8 @@ function Prontuario() {
         >
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE PROBLEMAS"
           >
             {arrayproblemas.map((item) => (
@@ -1870,7 +1874,8 @@ function Prontuario() {
           className="conteudo">
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE EVOLUÇÕES"
           >
             {arrayevolucao.map((item) => (
@@ -2285,11 +2290,9 @@ function Prontuario() {
         >
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE PROPOSTAS DESKTOP"
-            style={{
-              width: '100%'
-            }}
           >
             {arraypropostas.map((item) => (
               <p
@@ -2574,7 +2577,8 @@ function Prontuario() {
         >
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE INTERCONSULTAS"
           >
             {arrayinterconsultas.map((item) => (
@@ -2812,7 +2816,8 @@ function Prontuario() {
         >
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE EXAMES LABORATORIAIS"
           >
             {arraylaboratorio.map((item) => (
@@ -3024,7 +3029,8 @@ function Prontuario() {
         >
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE EXAMES DE IMAGEM"          >
             {arrayimagem.map((item) => (
               <div
@@ -3370,7 +3376,8 @@ function Prontuario() {
           className="conteudo">
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE BALANÇOS"
           >
             {listbalancos.map((item) => (
@@ -3617,6 +3624,9 @@ function Prontuario() {
     });
   }
   const viewSettings = (origem) => {
+    // esquemas de cores >> 1 = purplescheme, 2 = bluescheme, etc...
+    var paleta = origem.filter(valor => valor.componente == "COLORSCHEME").map(valor => valor.view);
+    setschemecolor(paleta == 1 ? 'purplescheme' : 'bluescheme');
     setmenuevolucoes(origem.filter(valor => valor.componente == "EVOLUÇÕES").map(valor => valor.view));
     setmenudiagnosticos(origem.filter(valor => valor.componente == "DIAGNÓSTICOS").map(valor => valor.view));
     setmenuproblemas(origem.filter(valor => valor.componente == "PROBLEMAS").map(valor => valor.view));
@@ -3635,6 +3645,7 @@ function Prontuario() {
     setcarddiagnosticos(origem.filter(valor => valor.componente == "DIAGNÓSTICO").map(valor => valor.view));
     setcardhistoricoatb(origem.filter(valor => valor.componente == "HISTÓRICO DE ANTIBIÓTICOS").map(valor => valor.view));
     setcardhistoricoatendimentos(origem.filter(valor => valor.componente == "HISTÓRICO DE ATENDIMENTOS").map(valor => valor.view));
+    setcardanamnese(origem.filter(valor => valor.componente == "ANAMNESE").map(valor => valor.view));
   }
 
   useEffect(() => {
@@ -3646,10 +3657,11 @@ function Prontuario() {
   const LoadPrincipal = useCallback(() => {
     return (
       <div
+        className="conteudo"
         style={{
           display: loadprincipal == 1 && stateprontuario == 1 ? 'flex' : 'none',
           position: 'absolute', top: '20vh', left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(255, 255, 255, 1)', opacity: 1,
+          backgroundColor: '#f2f2f2', opacity: 1, borderRadius: 0, zIndex: 1, margin: 5,
           alignItems: 'center', justifyContent: 'center',
         }}>
         <img
@@ -3834,6 +3846,7 @@ function Prontuario() {
                       paddingBottom: 0,
                       color: '#ffffff',
                       alignSelf: 'flex-start',
+                      textAlign: 'left',
                       fontSize: window.innerWidth > 400 ? 18 : 14,
                     }}
                     id="inputNome"
@@ -4007,13 +4020,12 @@ function Prontuario() {
   }
   function DetalhesPaciente() {
     return (
-      <div className="widget fade-in"
+      <div className="detalhes fade-in"
         onClick={(e) => { setshowdetalhes(0); e.stopPropagation() }}
         style={{
-          display: showdetalhes == 1 ? 'flex' : 'none', justifyContent: 'flex-start', flexDirection: 'column', alignItems: 'flex-start',
-          position: 'absolute', top: 10, left: 10,
-          width: '40vw', zIndex: 3,
-        }}>
+          display: showdetalhes == 1 ? 'flex' : 'none',
+        }}
+      >
         <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'PRONTUÁRIO: ' + idpaciente}</div>
         <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'ATENDIMENTO: ' + idatendimento}</div>
         <div className="title5" style={{ fontSize: 12, textAlign: 'left' }}>{'DN: ' + dn}</div>
@@ -4083,8 +4095,8 @@ function Prontuario() {
       <button
         className="grey-button"
         id="BTN MENU MOBILE"
-        onClick={() => showMenuMobile()}
-        onTouchStart={() => updateInvasoes()}
+        onClick={(e) => { showMenuMobile(); e.stopPropagation() }}
+        // onTouchStart={() => updateInvasoes()}
         style={{ zIndex: 0 }}
       >
         <img
@@ -4204,25 +4216,10 @@ function Prontuario() {
     if (stateprontuario === 1) {
       return (
         <div id="painel principal"
-          className="scroll" style={{ width: '100%' }}
+          className="scroll"
+          style={{ alignItems: 'center', flexDirection: 'row', backgroundColor: 'transparent', borderColor: 'transparent', 
+          flexWrap: 'wrap', justifyContent: 'space-evenly' }}
         >
-          <div
-            className="secondary"
-            id="DESTAQUES"
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'flex-start',
-              flexWrap: 'wrap',
-              borderRadius: 0,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              width: '100%',
-              margin: 10,
-              padding: 0,
-              paddingRight: 0,
-            }}
-          >
             <CardInvasoes></CardInvasoes>
             <CardLesoes></CardLesoes>
             <CardStatus></CardStatus>
@@ -4233,19 +4230,13 @@ function Prontuario() {
             <CardDiagnosticos></CardDiagnosticos>
             <CardAntibioticos></CardAntibioticos>
             <CardInternacoes></CardInternacoes>
-          </div>
+          
           <div
             id="ANAMNESE"
             className="secondary"
             style={{
-              margin: 0,
-              padding: 5,
-              paddingLeft: 10,
-              paddingRight: 10,
-              flexDirection: 'column',
+              display: cardanamnese == 1 ? 'flex' : 'none',
               justifyContent: 'center',
-              width: '100%',
-              boxShadow: 'none'
             }}
           >
             <div
@@ -4255,10 +4246,9 @@ function Prontuario() {
                 margin: 0,
                 padding: 0,
                 justifyContent: 'center',
-                width: '100%'
               }}
             >
-              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div className="title2center" style={{ color: '#8f9bbc' }}>
                   {window.innerWidth > 400 ? 'ANTECEDENTES PESSOAIS' : 'ANTECEDENTES'}
                 </div>
@@ -4268,14 +4258,14 @@ function Prontuario() {
                     setantecedentes(document.getElementById("inputAp").value);
                     updateAtendimento();
                   }}
-                  style={{ width: '100%', height: 140 }}
+                  style={{ width: window.innerWidth < 400 ? '40vw' : 'calc(40vw - 20px)', height: 140 }}
                   id="inputAp"
                   title="ANTECEDENTES PESSOAIS."
                 >
                   {antecedentes}
                 </textarea>
               </div>
-              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div className="title2center" style={{ color: '#8f9bbc' }}>ALERGIAS</div>
                 <textarea
                   className="textarea"
@@ -4283,7 +4273,7 @@ function Prontuario() {
                     setalergias(document.getElementById("inputAlergias").value);
                     updateAtendimento();
                   }}
-                  style={{ width: '100%', height: 140 }}
+                  style={{ width: window.innerWidth < 400 ? '40vw' : 'calc(40vw - 20px)', height: 140 }}
                   id="inputAlergias"
                   title="ALERGIAS."
                 >
@@ -4297,10 +4287,9 @@ function Prontuario() {
                 flexDirection: 'row',
                 margin: 0,
                 justifyContent: 'center',
-                width: '100%'
               }}
             >
-              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div className="title2center" style={{ color: '#8f9bbc' }}>
                   {window.innerWidth > 400 ? 'MEDICAÇÕES DE USO PRÉVIO' : 'MEDICAÇÕES'}
                 </div>
@@ -4310,14 +4299,14 @@ function Prontuario() {
                     setmedicacoes(document.getElementById("inputMedprev").value);
                     updateAtendimento();
                   }}
-                  style={{ width: '100%', height: 140 }}
+                  style={{ width: window.innerWidth < 400 ? '40vw' : 'calc(40vw - 20px)', height: 140 }}
                   id="inputMedprev"
                   title="MEDICAÇÕES PRÉVIAS."
                 >
                   {medicacoes}
                 </textarea>
               </div>
-              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+              <div style={{ padding: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div className="title2center" style={{ color: '#8f9bbc' }}>EXAMES PRÉVIOS</div>
                 <textarea
                   className="textarea"
@@ -4325,7 +4314,7 @@ function Prontuario() {
                     setexames(document.getElementById("inputExprev").value);
                     updateAtendimento();
                   }}
-                  style={{ width: '100%', height: 140 }}
+                  style={{ width: window.innerWidth < 400 ? '40vw' : 'calc(40vw - 20px)', height: 140 }}
                   id="inputExprev"
                   title="EXAMES PRÉVIOS."
                 >
@@ -4340,7 +4329,6 @@ function Prontuario() {
                 margin: 0,
                 padding: 5,
                 justifyContent: 'center',
-                width: '100%'
               }}
             >
               <div className="title2center" style={{ color: '#8f9bbc' }}>HISTÓRIA DA DOENÇA ATUAL</div>
@@ -4350,7 +4338,7 @@ function Prontuario() {
                   sethistoria(document.getElementById("inputHda").value);
                   updateAtendimento();
                 }}
-                style={{ width: '100%', height: 140 }}
+                style={{ width: window.innerWidth < 400 ? '80vw' : 'calc(80vw - 20px)', height: 140 }}
                 id="inputHda"
                 title="HISTÓRIA DA DOENÇA ATUAL."
               >
@@ -5176,7 +5164,7 @@ function Prontuario() {
                 opacity: tipousuario == 1 || tipousuario == 2 ? 1 : 0.5,
               }}
             >
-              DIAGNÓSTICOS
+              {window.innerWidth > 400 ? 'DIAGNÓSTICOS' : 'DIAGN.'}
             </button>
             <button
               id="btnAddDiagnosticos"
@@ -7954,7 +7942,8 @@ function Prontuario() {
         >
           <Filtros></Filtros>
           <div
-            className="scroll" style={{ width: '100%' }}
+            className="scroll"
+            style={{ width: '100%', height: '90%', backgroundColor: 'transparent', borderColor: 'transparent' }}
             id="LISTA DE FORMULÁRIOS"
           >
             {arrayformularios.map((item) => (
@@ -9791,7 +9780,7 @@ function Prontuario() {
             width: '100%',
             height: '100%',
             padding: 10, paddingLeft: 0,
-            boxShadow: '0 0 0.5em black',
+            boxShadow: '0px 2px 10px 5px rgba(0, 0, 0, 0.5)',
           }}
         >
           <div className="title2" style={{ color: "#ffffff" }}>{'LISTA DE PACIENTES:  ' + nomeunidade}</div>
@@ -9799,10 +9788,9 @@ function Prontuario() {
             {listatendimentos.filter(item => item.hospital == nomehospital && item.unidade == nomeunidade && item.ativo > 0).map((item) => (
               <div
                 key={item.id}
-                className="row"
-                style={{ opacity: 1 }}
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
               >
-                <button className="grey-button" style={{ backgroundColor: 'grey', display: item.box !== '' ? 'flex' : 'none' }}>
+                <button className="grey-button" style={{ backgroundColor: 'grey', marginRight: 10, display: item.box !== '' ? 'flex' : 'none' }}>
                   {item.box}
                 </button>
                 <button
@@ -9816,7 +9804,7 @@ function Prontuario() {
                   style={{
                     padding: 10,
                     margin: 2.5,
-                    width: 250,
+                    width: '100%',
                     height: 50,
                   }}
                 >

@@ -1,6 +1,7 @@
 /* eslint eqeqeq: "off" */
 import React, { useContext } from 'react'
 import logo from '../images/newlogo.svg';
+import Logo from '../components/Logo'
 import logoff from '../images/power.svg'
 import back from '../images/back.svg'
 import foto from '../images/3x4.jpg'
@@ -18,6 +19,7 @@ function Header({ link, titulo }) {
   return (
     <div
       id="HEADER"
+      className="corescura"
       style={{
         display: 'flex',
         flexDirection: 'row',
@@ -27,28 +29,18 @@ function Header({ link, titulo }) {
         padding: 0,
         width: '100vw',
         height: '18vh',
-        backgroundColor: 'grey',
         boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, 0.3)',
       }}
     >
       <div style={{
         display: 'flex', textAlign: 'left',
-        flexDirection: 'row', justifyContent: 'flex-start', 
-        alignItems: 'flex-start', alignSelf: 'flex-start', 
+        flexDirection: 'row', justifyContent: 'flex-start',
+        alignItems: 'flex-start', alignSelf: 'flex-start',
         width: '100%'
       }}>
-        <img
-          alt=""
-          id="logo"
-          src={logo}
-          style={{
-            display: link !== "/prontuario" && window.innerWidth > 400 ? 'flex' : 'none',
-            margin: 5, marginLeft: 10,
-            padding: 10,
-            height: 0.15 * window.innerHeight,
-            borderRadius: 50,
-          }}
-        ></img>
+        <div style={{ margin: 10, marginRight: 0, display: window.innerWidth > 400 ? 'flex' : 'none' }}>
+          <Logo height={100} width={100}></Logo>
+        </div>
         <img
           alt=""
           id="logo"

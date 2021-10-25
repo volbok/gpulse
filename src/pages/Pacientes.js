@@ -111,7 +111,7 @@ function Pacientes() {
           <button
             className="header-button"
             style={{
-              width: '100%'
+              width: '100%',
             }}
           >
             NOME
@@ -1141,7 +1141,8 @@ function Pacientes() {
             justifyContent: 'flex-start',
             width: '100%',
             height: '100%',
-            marginTop: 5
+            marginTop: 5,
+            
           }}>
           <Chart></Chart>
           <div
@@ -1151,7 +1152,6 @@ function Pacientes() {
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
-              height: '100%',
               padding: 5,
             }}>
             <FilterPacientes></FilterPacientes>
@@ -1171,7 +1171,7 @@ function Pacientes() {
           }}>
           <Chart></Chart>
           <div
-            className="scrollgroup"
+            className="scroll"
             style={{
               display: tipounidade == 1 ? 'flex' : 'none',
               flexDirection: 'column',
@@ -1195,7 +1195,7 @@ function Pacientes() {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             width: '100%',
-            marginTop: 5
+            height: '100%',
           }}>
           <Chart></Chart>
           <div
@@ -1215,7 +1215,7 @@ function Pacientes() {
         </div>
         <div
           id="PRINCIPAL"
-          className="scrollgroup"
+          className="scroll"
           style={{
             display: tipounidade == 1 && window.innerWidth < 400 ? 'flex' : 'none',
             flexDirection: 'column',
