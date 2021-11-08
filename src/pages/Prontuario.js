@@ -4544,7 +4544,7 @@ function Prontuario() {
             flexWrap: 'wrap', justifyContent: 'space-evenly'
           }}
         >
-          <AptPlanoTerapeutico></AptPlanoTerapeutico>
+          
           <CardInvasoes></CardInvasoes>
           <CardLesoes></CardLesoes>
           <CardStatus></CardStatus>
